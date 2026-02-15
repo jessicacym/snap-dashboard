@@ -576,6 +576,41 @@ body {
 }
 
 /* ============================================
+   MARQUEE — scrolling large text between sections
+   ============================================ */
+.marquee-section {
+  overflow: hidden;
+  background: var(--bg-alt);
+  padding: 60px 0;
+  white-space: nowrap;
+}
+
+.marquee-track {
+  display: inline-flex;
+  animation: marqueeScroll 18s linear infinite;
+}
+
+.marquee-text {
+  font-family: var(--font-en);
+  font-size: clamp(4rem, 10vw, 9rem);
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.06);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  padding-right: 80px;
+  user-select: none;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ============================================
    STATS
    ============================================ */
 .stats-grid {
