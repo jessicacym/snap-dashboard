@@ -42,7 +42,7 @@
         <ul>
           <li><a href="#about">ABOUT</a></li>
           <li><a href="#stats">KEY FIGURES</a></li>
-          <li><a href="#method">METHODOLOGY</a></li>
+          <li><a href="#method">PARTNERS</a></li>
           <li><a href="#insights">INSIGHTS</a></li>
         </ul>
       </div>
@@ -72,15 +72,22 @@
         </p>
         <div class="statement-body">
           <p>
-            This dashboard investigates the 2013 Supplemental Nutrition
-            Assistance Program (SNAP), the largest federal nutrition assistance
-            program in the United States.
+            By 2025, the United States faces intensifying economic polarization.
+            Rising inflation, stagnating wages, and an increasing Engel
+            coefficient indicate that a growing share of household budgets goes
+            to food. With political debates around SNAP funding and eligibility
+            changes under the current administration, understanding SNAP
+            participation patterns is no longer just an academic exercise—it is
+            essential for policy evaluation and civic awareness.
           </p>
           <p>
-            Through interactive data visualizations, we explore participation
-            rates, benefit distribution, and demographic patterns across all 50
-            states — providing insights for policymakers, researchers, and the
-            public.
+            SNAP (Supplemental Nutrition Assistance Program) served
+            approximately 42 million Americans in FY2023, distributing over $113
+            billion in benefits. It is the largest federal nutrition assistance
+            program and a critical indicator of poverty and social welfare. Yet
+            most public dashboards present SNAP data only at the state level,
+            obscuring the dramatic county-level variation that determines where
+            resources are most—and least—adequate.
           </p>
         </div>
       </div>
@@ -211,52 +218,296 @@
       </div>
     </section>
 
-    <!-- ========== METHODOLOGY ========== -->
-    <section class="section section--method" id="method">
-      <div class="section-inner">
-        <div class="section-label">
-          <span class="section-num">03</span>
-          <span class="section-tag">METHODOLOGY</span>
-        </div>
-        <h2 class="section-heading">How We Built This</h2>
-        <div class="method-list">
-          <div class="method-step">
-            <div class="method-num">01</div>
-            <div class="method-body">
-              <h4>Data Collection</h4>
-              <p>
-                Data was sourced from the USDA Food and Nutrition Service, U.S.
-                Census Bureau, and other open data portals. Multiple datasets
-                were cross-referenced to ensure accuracy and completeness of
-                SNAP participation records for 2013.
-              </p>
+    <!-- ========== DATA SUPPORT ORGANIZATIONS — horizontal scroll ========== -->
+    <section class="hscroll-section" id="method">
+      <div class="hscroll-track" id="hscrollTrack">
+        <!-- Slide 0: Title card -->
+        <div class="hscroll-slide hscroll-slide--intro">
+          <div class="hscroll-intro-inner">
+            <div class="section-label">
+              <span class="section-num">03</span>
+              <span class="section-tag">PARTNERS</span>
             </div>
-          </div>
-          <div class="method-step">
-            <div class="method-num">02</div>
-            <div class="method-body">
-              <h4>Data Cleaning</h4>
-              <p>
-                Raw datasets were cleaned using spreadsheet tools and Python
-                scripts. This involved removing duplicates, handling missing
-                values, standardizing state naming conventions, and normalizing
-                financial figures for consistent comparison.
-              </p>
-            </div>
-          </div>
-          <div class="method-step">
-            <div class="method-num">03</div>
-            <div class="method-body">
-              <h4>Visualization</h4>
-              <p>
-                Interactive visualizations were built using Tableau Public.
-                Chart types were selected based on the nature of each dataset —
-                geographic maps for state-level comparison, bar charts for
-                categorical data, and line charts for temporal trends.
-              </p>
+            <h2 class="hscroll-title">Data Support Organizations &amp; NGOs</h2>
+            <p class="hscroll-desc">
+              The organizations behind America's fight against hunger — from
+              federal agencies administering SNAP to nonprofits advocating for
+              food security across all 50 states.
+            </p>
+            <div class="hscroll-drag-hint">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+              <span>Drag to explore</span>
             </div>
           </div>
         </div>
+        <!-- 01 USDA FNS -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://www.fns.usda.gov/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/usda-fns.svg" alt="USDA FNS"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">01</span>
+            <h3 class="hscroll-slide-title">
+              USDA Food &amp; Nutrition Service
+            </h3>
+            <p class="hscroll-slide-sub">Federal Administrator</p>
+            <p class="hscroll-slide-text">
+              The federal agency that directly administers SNAP at the national
+              level. FNS oversees 16 federal nutrition assistance programs,
+              serving approximately 1 in 4 Americans over the course of a year.
+            </p>
+          </div>
+        </div>
+        <!-- 02 USDA ERS -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://www.ers.usda.gov/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/usda-ers.svg" alt="USDA ERS"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">02</span>
+            <h3 class="hscroll-slide-title">USDA Economic Research Service</h3>
+            <p class="hscroll-slide-sub">Data &amp; Research</p>
+            <p class="hscroll-slide-text">
+              The primary source for economic research on food and nutrition
+              assistance programs. ERS maintains the SNAP Data System and Policy
+              Database, providing data used by Congress and the research
+              community.
+            </p>
+          </div>
+        </div>
+        <!-- 03 CBPP -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://www.cbpp.org/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/cbpp.svg" alt="CBPP"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">03</span>
+            <h3 class="hscroll-slide-title">
+              Center on Budget and Policy Priorities
+            </h3>
+            <p class="hscroll-slide-sub">Research &amp; Policy</p>
+            <p class="hscroll-slide-text">
+              A nonpartisan research institute promoting policies to strengthen
+              SNAP accessibility. Their research shows every $1 in new SNAP
+              benefits generates $1.50 in GDP during economic downturns.
+            </p>
+          </div>
+        </div>
+        <!-- 04 FRAC -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://frac.org/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/frac.png" alt="FRAC"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">04</span>
+            <h3 class="hscroll-slide-title">
+              Food Research &amp; Action Center
+            </h3>
+            <p class="hscroll-slide-sub">Research &amp; Advocacy</p>
+            <p class="hscroll-slide-text">
+              A leading nonprofit protecting and expanding federal nutrition
+              programs for over five decades. FRAC monitors implementation of
+              food assistance laws, provides training, and runs public
+              information campaigns.
+            </p>
+          </div>
+        </div>
+        <!-- 05 Feeding America -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://www.feedingamerica.org/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/feeding-america.svg" alt="Feeding America"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">05</span>
+            <h3 class="hscroll-slide-title">Feeding America</h3>
+            <p class="hscroll-slide-sub">Food Bank Network</p>
+            <p class="hscroll-slide-text">
+              The nation's largest domestic hunger-relief organization with 200+
+              food banks and 60,000 partner agencies. For every meal the Feeding
+              America network provides, SNAP provides nine.
+            </p>
+          </div>
+        </div>
+        <!-- 06 Bread for the World -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://www.bread.org/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/bread.png" alt="Bread for the World"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">06</span>
+            <h3 class="hscroll-slide-title">Bread for the World</h3>
+            <p class="hscroll-slide-sub">Policy Advocacy</p>
+            <p class="hscroll-slide-text">
+              A Christian advocacy organization urging decision makers to pursue
+              a world without hunger. Their 300,000+ advocate network has been
+              instrumental in protecting SNAP from proposed funding cuts.
+            </p>
+          </div>
+        </div>
+        <!-- 07 MAZON -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://mazon.org/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/mazon.jpg" alt="MAZON"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">07</span>
+            <h3 class="hscroll-slide-title">MAZON</h3>
+            <p class="hscroll-slide-sub">A Jewish Response to Hunger</p>
+            <p class="hscroll-slide-text">
+              A national advocacy organization fighting hunger among people of
+              all faiths. MAZON invests in state-level advocacy and litigation
+              to protect SNAP participants' rights, calling SNAP "our country's
+              most effective defense against hunger."
+            </p>
+          </div>
+        </div>
+        <!-- 08 No Kid Hungry -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://www.nokidhungry.org/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/nokidhungry.svg" alt="No Kid Hungry"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">08</span>
+            <h3 class="hscroll-slide-title">No Kid Hungry</h3>
+            <p class="hscroll-slide-sub">Share Our Strength</p>
+            <p class="hscroll-slide-text">
+              A campaign to end child hunger by connecting children to nutrition
+              programs including SNAP. Research shows SNAP participation by
+              pregnant mothers reduces the likelihood of low birth weight by
+              23%.
+            </p>
+          </div>
+        </div>
+        <!-- 09 The Food Trust -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://thefoodtrust.org/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/thefoodtrust.svg" alt="The Food Trust"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">09</span>
+            <h3 class="hscroll-slide-title">The Food Trust</h3>
+            <p class="hscroll-slide-sub">Community Food Access</p>
+            <p class="hscroll-slide-text">
+              Working since 1992 to ensure access to affordable, nutritious
+              food. Their Food Bucks program allows SNAP shoppers to stretch
+              their benefits at farmers markets for fresh fruits and vegetables.
+            </p>
+          </div>
+        </div>
+        <!-- 10 WhyHunger -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://whyhunger.org/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/whyhunger.svg" alt="WhyHunger"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">10</span>
+            <h3 class="hscroll-slide-title">WhyHunger</h3>
+            <p class="hscroll-slide-sub">Grassroots Advocacy</p>
+            <p class="hscroll-slide-text">
+              Co-founded by musician Harry Chapin, WhyHunger funds and connects
+              grassroots organizations to advance the human right to nutritious
+              food, working at the intersection of hunger, racial justice, and
+              public health.
+            </p>
+          </div>
+        </div>
+        <!-- 11 Hunger Free America -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://www.hungerfreeamerica.org/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/hungerfreeamerica.svg" alt="Hunger Free America"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">11</span>
+            <h3 class="hscroll-slide-title">Hunger Free America</h3>
+            <p class="hscroll-slide-sub">Direct Service &amp; Advocacy</p>
+            <p class="hscroll-slide-text">
+              A nonpartisan nonprofit that assists low-income families in
+              obtaining SNAP and WIC benefits while advocating for policies to
+              end domestic hunger. Also connects families with private food
+              resources nationwide.
+            </p>
+          </div>
+        </div>
+        <!-- 12 NACo -->
+        <div class="hscroll-slide">
+          <a
+            class="hscroll-slide-img hscroll-slide-link"
+            href="https://www.naco.org/"
+            target="_blank"
+            rel="noopener"
+            ><img src="logos/naco.png" alt="NACo"
+          /></a>
+          <div class="hscroll-slide-body">
+            <span class="hscroll-slide-num">12</span>
+            <h3 class="hscroll-slide-title">
+              National Association of Counties
+            </h3>
+            <p class="hscroll-slide-sub">County Administration</p>
+            <p class="hscroll-slide-text">
+              Represents county governments that administer SNAP in 10 states,
+              covering 34.3% of total SNAP participants. NACo advocates for
+              adequate federal funding and administrative support for
+              county-level operations.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Progress bar -->
+      <div class="hscroll-progress">
+        <div class="hscroll-progress-fill" id="hscrollProgress"></div>
       </div>
     </section>
 

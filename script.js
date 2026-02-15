@@ -6,7 +6,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // --- Scroll-triggered animations ---
   const animTargets = document.querySelectorAll(
-    ".statement-heading, .statement-sub, .statement-body, .section-heading, .about-card, .stat-item, .method-step, .insight-card",
+    ".statement-heading, .statement-sub, .statement-body, .section-heading, .about-card, .stat-item, .insight-card",
   );
 
   const observer = new IntersectionObserver(
@@ -66,6 +66,130 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // --- Horizontal scroll section (methodology) ---
+  (function () {
+    var section = document.querySelector(".hscroll-section");
+    var track = document.getElementById("hscrollTrack");
+    var progressFill = document.getElementById("hscrollProgress");
+    if (!section || !track) return;
+
+    var isDragging = false;
+    var startX = 0;
+    var currentX = 0;
+    var prevX = 0;
+    var dragMoved = false;
+    var DRAG_THRESHOLD = 5;
+
+    function getMax() {
+      return -(track.scrollWidth - section.offsetWidth);
+    }
+
+    function clamp(val) {
+      var max = getMax();
+      if (val > 0) return 0;
+      if (val < max) return max;
+      return val;
+    }
+
+    function setPos() {
+      track.style.transform = "translateX(" + currentX + "px)";
+      // Update progress bar
+      if (progressFill) {
+        var max = getMax();
+        var pct = max === 0 ? 0 : (currentX / max) * 100;
+        progressFill.style.width = Math.min(100, Math.max(0, pct)) + "%";
+      }
+    }
+
+    // Mouse drag
+    section.addEventListener("mousedown", function (e) {
+      isDragging = true;
+      dragMoved = false;
+      startX = e.clientX;
+      prevX = currentX;
+      track.style.transition = "none";
+      // Hide hint
+      var hint = section.querySelector(".hscroll-drag-hint");
+      if (hint) hint.style.opacity = "0";
+    });
+
+    window.addEventListener("mousemove", function (e) {
+      if (!isDragging) return;
+      if (Math.abs(e.clientX - startX) > DRAG_THRESHOLD) {
+        dragMoved = true;
+      }
+      currentX = clamp(prevX + (e.clientX - startX));
+      setPos();
+    });
+
+    window.addEventListener("mouseup", function () {
+      if (!isDragging) return;
+      isDragging = false;
+      track.style.transition =
+        "transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94)";
+    });
+
+    // Prevent link navigation when dragging
+    section.querySelectorAll(".hscroll-slide-link").forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        if (dragMoved) {
+          e.preventDefault();
+        }
+      });
+    });
+
+    // Touch drag
+    section.addEventListener(
+      "touchstart",
+      function (e) {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        prevX = currentX;
+        track.style.transition = "none";
+        var hint = section.querySelector(".hscroll-drag-hint");
+        if (hint) hint.style.opacity = "0";
+      },
+      { passive: true },
+    );
+
+    section.addEventListener(
+      "touchmove",
+      function (e) {
+        if (!isDragging) return;
+        currentX = clamp(prevX + (e.touches[0].clientX - startX));
+        setPos();
+      },
+      { passive: true },
+    );
+
+    section.addEventListener("touchend", function () {
+      isDragging = false;
+      track.style.transition =
+        "transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94)";
+    });
+
+    // Mouse wheel horizontal scroll
+    section.addEventListener(
+      "wheel",
+      function (e) {
+        e.preventDefault();
+        var delta = e.deltaY || e.deltaX;
+        currentX = clamp(currentX - delta);
+        track.style.transition = "none";
+        setPos();
+        // Hide hint
+        var hint = section.querySelector(".hscroll-drag-hint");
+        if (hint) hint.style.opacity = "0";
+      },
+      { passive: false },
+    );
+
+    // Prevent image drag
+    section.addEventListener("dragstart", function (e) {
+      e.preventDefault();
+    });
+  })();
 
   // ============================================
   //  SNAP News Feature
