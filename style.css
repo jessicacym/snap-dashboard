@@ -57,42 +57,73 @@ body {
 }
 
 /* --- Center visual: interactive map --- */
-/* Map fills center like the ink splash — large, dominant.
-   Only the Tableau bottom footer bar is clipped (via negative
-   margin-bottom hidden by overflow:hidden on .fv-visual).
-   The map itself, including filter controls, is shown in full. */
+/* The iframe is scaled up with CSS transform so the map graphic
+   fills the visible area. overflow:hidden on .fv-visual clips
+   everything outside. White overlays hide the grey border and
+   bottom toolbar. The scale + negative translate centers the
+   map portion of Tableau's output. */
 .fv-visual {
   position: absolute;
   top: 44%;
-  left: 50%;
+  left: 46%;
   transform: translate(-50%, -50%);
-  width: 60%;
-  height: 80%;
+  width: 75%;
+  height: 85%;
   z-index: 1;
   overflow: hidden;
+  opacity: 0;
+  animation: fvVisualIn 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
 }
 
 .fv-map-wrap {
+  position: relative;
   width: 100%;
-  /* Taller than .fv-visual so the iframe footer overflows past the clip */
-  height: calc(100% + 46px);
-  opacity: 0;
-  transform: scale(0.95);
-  animation: fvVisualIn 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
+  height: 100%;
 }
 
 .fv-map-wrap iframe {
   display: block;
   border: none;
+  /* Make iframe larger than container, then scale up to fill.
+     Tableau renders at iframe's CSS size, so we give it more room
+     then visually scale and reposition to show only the map. */
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  transform: scale(1.35);
+  transform-origin: 20% 35%;
   pointer-events: auto;
+}
+
+/* White bar covering the Tableau bottom toolbar */
+.fv-map-wrap::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #ffffff;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* White frame covering Tableau's grey border on all sides */
+.fv-map-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 4px solid #ffffff;
+  z-index: 4;
+  pointer-events: none;
 }
 
 @keyframes fvVisualIn {
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translate(-50%, -50%);
   }
 }
 
@@ -693,8 +724,8 @@ body {
    ============================================ */
 @media (max-width: 1200px) {
   .fv-visual {
-    width: 72%;
-    height: 75%;
+    width: 82%;
+    height: 80%;
   }
   .section {
     padding: 100px 48px;
@@ -706,8 +737,8 @@ body {
 
 @media (max-width: 1024px) {
   .fv-visual {
-    width: 85%;
-    height: 65%;
+    width: 92%;
+    height: 72%;
   }
   .fv-side-menu {
     display: none;
