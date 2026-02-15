@@ -1,52 +1,69 @@
 /* ============================================
    Scroll & Load Animations
+   Ampersand-style interactions
    ============================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // --- Hero load animations ---
-  const heroElements = document.querySelectorAll(
-    ".anim-clip, .anim-fade, .anim-reveal",
-  );
-  setTimeout(() => {
-    heroElements.forEach((el) => el.classList.add("visible"));
-  }, 200);
-
   // --- Scroll-triggered animations ---
-  const scrollElements = document.querySelectorAll(".scroll-anim");
+  const animTargets = document.querySelectorAll(
+    ".section-heading, .about-card, .stat-item, .method-step, .insight-card",
+  );
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
+          const parent = entry.target.parentElement;
+          const siblings = parent
+            ? Array.from(parent.children).filter((c) =>
+                c.classList.contains(entry.target.classList[0]),
+              )
+            : [];
+          const idx = siblings.indexOf(entry.target);
+          const delay = idx >= 0 ? idx * 120 : 0;
+
+          setTimeout(() => {
+            entry.target.classList.add("visible");
+          }, delay);
+
           observer.unobserve(entry.target);
         }
       });
     },
     {
-      threshold: 0.15,
-      rootMargin: "0px 0px -60px 0px",
+      threshold: 0.12,
+      rootMargin: "0px 0px -40px 0px",
     },
   );
 
-  scrollElements.forEach((el) => observer.observe(el));
+  animTargets.forEach((el) => observer.observe(el));
 
-  // --- Subtle parallax on hero ---
-  const hero = document.querySelector(".hero");
-  const heroViz = document.querySelector(".hero-viz");
-
-  if (hero && heroViz) {
+  // --- Subtle parallax on hero visual ---
+  const fvVisual = document.querySelector(".fv-visual");
+  if (fvVisual) {
     window.addEventListener(
       "scroll",
       () => {
         const scrollY = window.scrollY;
-        const heroHeight = hero.offsetHeight;
-        if (scrollY < heroHeight) {
-          const progress = scrollY / heroHeight;
-          heroViz.style.transform = `translateY(${progress * 30}px)`;
+        const vh = window.innerHeight;
+        if (scrollY < vh) {
+          const progress = scrollY / vh;
+          fvVisual.style.transform = `translate(-50%, calc(-50% + ${progress * 40}px))`;
+          fvVisual.style.opacity = 1 - progress * 0.5;
         }
       },
       { passive: true },
     );
   }
+
+  // --- Smooth scroll for side menu links ---
+  document.querySelectorAll(".fv-side-menu a").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute("href"));
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  });
 });

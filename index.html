@@ -7,70 +7,62 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-content">
-        <div class="hero-text">
-          <div class="hero-label anim-reveal">
-            <span class="label-line"></span>
-            <span class="label-text">Data Dashboard</span>
-          </div>
-          <h1 class="hero-title">
-            <span class="title-line anim-clip" style="--delay: 0.2s">2013</span>
-            <span class="title-line anim-clip" style="--delay: 0.4s"
-              >America</span
-            >
-            <span class="title-line anim-clip accent" style="--delay: 0.6s"
-              >SNAP</span
-            >
-            <span class="title-line anim-clip" style="--delay: 0.8s"
-              >Investigation</span
-            >
-          </h1>
-          <p class="hero-subtitle anim-fade" style="--delay: 1.2s">
-            Supplemental Nutrition Assistance Program — Exploring participation,
-            benefits, and demographic patterns across the United States.
-          </p>
-          <div class="scroll-indicator anim-fade" style="--delay: 1.6s">
-            <div class="scroll-line"></div>
-            <span>Scroll to explore</span>
-          </div>
+    <!-- ========== HERO / FV ========== -->
+    <section class="fv">
+      <!-- Center: Interactive map (replaces ink splash) -->
+      <div class="fv-visual">
+        <div class="fv-map-wrap">
+          <iframe
+            src="https://public.tableau.com/views/1_17711016889240/4_1?:embed=true&:showVizHome=no&:toolbar=yes"
+            width="100%"
+            height="100%"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
         </div>
-        <div class="hero-viz anim-fade" style="--delay: 1s">
-          <div class="viz-frame">
-            <iframe
-              src="https://public.tableau.com/views/1_17711016889240/4_1?:embed=true&:showVizHome=no&:toolbar=yes"
-              width="100%"
-              height="100%"
-              frameborder="0"
-              allowfullscreen
-            ></iframe>
-          </div>
+      </div>
+
+      <!-- Left side: vertical menu (kept from template) -->
+      <div class="fv-side-menu">
+        <ul>
+          <li><a href="#about">ABOUT</a></li>
+          <li><a href="#stats">KEY FIGURES</a></li>
+          <li><a href="#method">METHODOLOGY</a></li>
+          <li><a href="#insights">INSIGHTS</a></li>
+        </ul>
+      </div>
+
+      <!-- Right-bottom: big title with black-bg white-text bars -->
+      <div class="fv-text-wrapper">
+        <div class="fvtext fvtext_1"><span>2013 America</span></div>
+        <div class="fvtext fvtext_2"><span>SNAP Investigation</span></div>
+        <div class="fvtext fvtext_3">
+          <span>Supplemental Nutrition Assistance Program</span>
         </div>
+        <p class="fv-text-small">
+          Exploring participation, benefits, and demographic patterns across the
+          United States.
+        </p>
       </div>
     </section>
 
-    <!-- Divider -->
-    <div class="section-divider">
-      <div class="divider-line"></div>
-    </div>
-
-    <!-- About Section -->
-    <section class="about-section">
-      <div class="about-container">
-        <div class="section-header scroll-anim">
-          <span class="section-number">01</span>
-          <h2 class="section-title">About This Dashboard</h2>
+    <!-- ========== ABOUT ========== -->
+    <section class="section section--about" id="about">
+      <div class="section-inner">
+        <div class="section-label">
+          <span class="section-num">01</span>
+          <span class="section-tag">ABOUT</span>
         </div>
+        <h2 class="section-heading">About This Dashboard</h2>
         <div class="about-grid">
-          <div class="about-card scroll-anim" style="--delay: 0.1s">
-            <div class="card-icon">
+          <div class="about-card">
+            <div class="about-card-icon">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -90,8 +82,8 @@
               families to help them afford food.
             </p>
           </div>
-          <div class="about-card scroll-anim" style="--delay: 0.2s">
-            <div class="card-icon">
+          <div class="about-card">
+            <div class="about-card-icon">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -110,8 +102,8 @@
               states in 2013.
             </p>
           </div>
-          <div class="about-card scroll-anim" style="--delay: 0.3s">
-            <div class="card-icon">
+          <div class="about-card">
+            <div class="about-card-icon">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -133,45 +125,59 @@
       </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats-section">
-      <div class="stats-container">
-        <div class="section-header scroll-anim">
-          <span class="section-number">02</span>
-          <h2 class="section-title">Key Figures</h2>
+    <!-- ========== KEY FIGURES ========== -->
+    <section class="section section--stats" id="stats">
+      <div class="section-inner">
+        <div class="section-label">
+          <span class="section-num">02</span>
+          <span class="section-tag">KEY FIGURES</span>
         </div>
+        <h2 class="section-heading">Numbers That Matter</h2>
         <div class="stats-grid">
-          <div class="stat-item scroll-anim" style="--delay: 0.1s">
+          <div class="stat-item">
             <span class="stat-number">47.6M</span>
             <span class="stat-label">Average Monthly Participants</span>
+            <div class="stat-bar">
+              <div class="stat-bar-fill" style="--w: 85%"></div>
+            </div>
           </div>
-          <div class="stat-item scroll-anim" style="--delay: 0.2s">
+          <div class="stat-item">
             <span class="stat-number">$76.1B</span>
             <span class="stat-label">Total Benefits Distributed</span>
+            <div class="stat-bar">
+              <div class="stat-bar-fill" style="--w: 72%"></div>
+            </div>
           </div>
-          <div class="stat-item scroll-anim" style="--delay: 0.3s">
+          <div class="stat-item">
             <span class="stat-number">$133</span>
             <span class="stat-label">Avg. Monthly Benefit Per Person</span>
+            <div class="stat-bar">
+              <div class="stat-bar-fill" style="--w: 55%"></div>
+            </div>
           </div>
-          <div class="stat-item scroll-anim" style="--delay: 0.4s">
+          <div class="stat-item">
             <span class="stat-number">50</span>
             <span class="stat-label">States Analyzed</span>
+            <div class="stat-bar">
+              <div class="stat-bar-fill" style="--w: 100%"></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Methodology Section -->
-    <section class="method-section">
-      <div class="method-container">
-        <div class="section-header scroll-anim">
-          <span class="section-number">03</span>
-          <h2 class="section-title">Methodology</h2>
+    <!-- ========== METHODOLOGY ========== -->
+    <section class="section section--method" id="method">
+      <div class="section-inner">
+        <div class="section-label">
+          <span class="section-num">03</span>
+          <span class="section-tag">METHODOLOGY</span>
         </div>
-        <div class="method-content">
-          <div class="method-step scroll-anim" style="--delay: 0.1s">
-            <div class="step-number">01</div>
-            <div class="step-content">
+        <h2 class="section-heading">How We Built This</h2>
+        <div class="method-list">
+          <div class="method-step">
+            <div class="method-num">01</div>
+            <div class="method-body">
               <h4>Data Collection</h4>
               <p>
                 Data was sourced from the USDA Food and Nutrition Service, U.S.
@@ -181,9 +187,9 @@
               </p>
             </div>
           </div>
-          <div class="method-step scroll-anim" style="--delay: 0.2s">
-            <div class="step-number">02</div>
-            <div class="step-content">
+          <div class="method-step">
+            <div class="method-num">02</div>
+            <div class="method-body">
               <h4>Data Cleaning</h4>
               <p>
                 Raw datasets were cleaned using spreadsheet tools and Python
@@ -193,9 +199,9 @@
               </p>
             </div>
           </div>
-          <div class="method-step scroll-anim" style="--delay: 0.3s">
-            <div class="step-number">03</div>
-            <div class="step-content">
+          <div class="method-step">
+            <div class="method-num">03</div>
+            <div class="method-body">
               <h4>Visualization</h4>
               <p>
                 Interactive visualizations were built using Tableau Public.
@@ -209,15 +215,16 @@
       </div>
     </section>
 
-    <!-- Insights Section -->
-    <section class="insights-section">
-      <div class="insights-container">
-        <div class="section-header scroll-anim">
-          <span class="section-number">04</span>
-          <h2 class="section-title">Insights</h2>
+    <!-- ========== INSIGHTS ========== -->
+    <section class="section section--insights" id="insights">
+      <div class="section-inner">
+        <div class="section-label">
+          <span class="section-num">04</span>
+          <span class="section-tag">INSIGHTS</span>
         </div>
+        <h2 class="section-heading">Key Findings</h2>
         <div class="insights-grid">
-          <div class="insight-card scroll-anim" style="--delay: 0.1s">
+          <div class="insight-card">
             <span class="insight-tag">Finding</span>
             <h4>Regional Disparity</h4>
             <p>
@@ -226,7 +233,7 @@
               socioeconomic patterns and cost-of-living differences.
             </p>
           </div>
-          <div class="insight-card scroll-anim" style="--delay: 0.2s">
+          <div class="insight-card">
             <span class="insight-tag">Finding</span>
             <h4>Urban vs. Rural</h4>
             <p>
@@ -235,7 +242,7 @@
               suggesting distinct patterns of food insecurity.
             </p>
           </div>
-          <div class="insight-card scroll-anim" style="--delay: 0.3s">
+          <div class="insight-card">
             <span class="insight-tag">Finding</span>
             <h4>Benefit Distribution</h4>
             <p>
@@ -248,11 +255,11 @@
       </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ========== FOOTER ========== -->
     <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-top scroll-anim">
-          <p class="footer-tagline">2013 America SNAP Investigation</p>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <p class="footer-title">2013 America SNAP Investigation</p>
           <p class="footer-sub">
             VDES39915 — Visualizing Information: Dynamic Data Models
           </p>
