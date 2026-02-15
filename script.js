@@ -6,7 +6,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // --- Scroll-triggered animations ---
   const animTargets = document.querySelectorAll(
-    ".section-heading, .about-card, .stat-item, .method-step, .insight-card",
+    ".statement-heading, .statement-sub, .statement-body, .section-heading, .about-card, .stat-item, .method-step, .insight-card",
   );
 
   const observer = new IntersectionObserver(
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const vh = window.innerHeight;
         if (scrollY < vh) {
           const progress = scrollY / vh;
-          fvVisual.style.transform = `translate(-50%, calc(-50% + ${progress * 40}px))`;
+          fvVisual.style.transform = `translate(-50%, calc(-50% + ${progress * 50}px))`;
           fvVisual.style.opacity = 1 - progress * 0.5;
         }
       },
