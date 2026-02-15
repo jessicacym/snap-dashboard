@@ -69,6 +69,18 @@ body {
   animation: fvVisualIn 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
 }
 
+.fv-map-hint {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 300;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+  text-align: right;
+  margin-top: 14px;
+  max-width: 500px;
+  line-height: 1.5;
+}
+
 .fv-map-wrap {
   position: relative;
   width: 100%;
@@ -676,6 +688,263 @@ body {
   width: var(--w, 0%);
 }
 
+/* --- Stat item interactive state --- */
+.stat-item[data-stat] {
+  cursor: pointer;
+  position: relative;
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease,
+    border-color 0.3s ease,
+    background-color 0.2s ease;
+}
+
+.stat-item[data-stat]:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.stat-item[data-stat].active {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-color: var(--text) !important;
+}
+
+.stat-hint {
+  display: block;
+  font-family: var(--font-en);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stat-item[data-stat]:hover .stat-hint {
+  opacity: 1;
+}
+
+/* --- Stat Tooltip --- */
+.stat-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 340px;
+  background: var(--bg);
+  border: 1px solid var(--border-dark);
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  animation: statTooltipIn 0.3s ease forwards;
+}
+
+.stat-tooltip.show {
+  display: block;
+  pointer-events: auto;
+  opacity: 1;
+}
+
+@keyframes statTooltipIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Tooltip arrow */
+.stat-tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 10px;
+  height: 10px;
+  background: var(--bg);
+  border-right: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.stat-tooltip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.stat-tooltip-header h4 {
+  font-family: var(--font-en);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0;
+}
+
+.stat-tooltip-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.stat-tooltip-close:hover {
+  color: var(--text);
+}
+
+.stat-tooltip-body {
+  padding: 12px 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Data rows with mini bar charts */
+.stat-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-family: var(--font-en);
+  font-size: 0.72rem;
+}
+
+.stat-tooltip-row > span:first-child {
+  flex: 0 0 80px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat-tooltip-row > span:last-child {
+  flex: 0 0 52px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-tooltip-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.stat-tooltip-bar {
+  height: 100%;
+  width: var(--bw, 0%);
+  background: var(--text);
+  border-radius: 3px;
+  transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.stat-tooltip-row--highlight .stat-tooltip-bar {
+  background: #e31c3d;
+}
+
+.stat-tooltip-row--highlight > span:first-child {
+  color: #e31c3d;
+  font-weight: 700;
+}
+
+.stat-tooltip-row--avg {
+  border-top: 1px dashed var(--border-dark);
+  border-bottom: 1px dashed var(--border-dark);
+  margin: 4px 0;
+  padding: 6px 0;
+}
+
+.stat-tooltip-row--avg .stat-tooltip-bar {
+  background: var(--text-muted);
+}
+
+.stat-tooltip-row--avg > span:first-child {
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.stat-tooltip-note {
+  font-family: var(--font-en);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  padding: 8px 16px 12px;
+  border-top: 1px solid var(--border);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* States grid layout */
+.stat-tooltip-states {
+  padding: 12px 16px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.stat-tooltip-region {
+  margin-bottom: 12px;
+}
+
+.stat-tooltip-region:last-child {
+  margin-bottom: 0;
+}
+
+.stat-tooltip-region h5 {
+  font-family: var(--font-en);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.stat-tooltip-region span {
+  display: inline-block;
+  font-family: var(--font-en);
+  font-size: 0.68rem;
+  color: var(--text-sub);
+  background: var(--bg-alt);
+  padding: 3px 8px;
+  margin: 2px 3px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+
+/* Responsive: tooltip below on mobile */
+@media (max-width: 768px) {
+  .stat-tooltip {
+    position: fixed;
+    bottom: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 360px;
+  }
+  .stat-tooltip::after {
+    display: none;
+  }
+}
+
 /* ============================================
    METHODOLOGY — Horizontal scroll (ampersand style)
    ============================================ */
@@ -883,15 +1152,15 @@ body {
    ============================================ */
 .insights-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
 }
 
 .insight-card {
   background: var(--bg);
   border: 1px solid var(--border-dark);
   border-radius: 4px;
-  padding: 40px 32px;
+  padding: 28px 22px;
   opacity: 0;
   transform: translateY(40px);
   transition:
@@ -924,15 +1193,15 @@ body {
 
 .insight-card h4 {
   font-family: var(--font-en);
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   letter-spacing: -0.01em;
   color: var(--text);
 }
 
 .insight-card p {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   line-height: 1.8;
   color: var(--text-sub);
 }

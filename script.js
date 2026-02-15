@@ -67,6 +67,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // --- Stat item tooltip interaction ---
+  (function () {
+    var statItems = document.querySelectorAll(".stat-item[data-stat]");
+    if (!statItems.length) return;
+
+    function closeAllTooltips() {
+      statItems.forEach(function (item) {
+        item.classList.remove("active");
+        var tip = item.querySelector(".stat-tooltip");
+        if (tip) tip.classList.remove("show");
+      });
+    }
+
+    statItems.forEach(function (item) {
+      item.addEventListener("click", function (e) {
+        // Don't toggle if clicking the close button (handled separately)
+        if (e.target.closest(".stat-tooltip-close")) return;
+        // Don't toggle if clicking inside an already open tooltip
+        if (e.target.closest(".stat-tooltip")) return;
+
+        var tip = item.querySelector(".stat-tooltip");
+        var isOpen = tip && tip.classList.contains("show");
+
+        closeAllTooltips();
+
+        if (!isOpen && tip) {
+          item.classList.add("active");
+          tip.classList.add("show");
+        }
+      });
+    });
+
+    // Close button handlers
+    document.querySelectorAll(".stat-tooltip-close").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        closeAllTooltips();
+      });
+    });
+
+    // Close on click outside
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".stat-item[data-stat]")) {
+        closeAllTooltips();
+      }
+    });
+  })();
+
   // --- Horizontal scroll section (methodology) ---
   (function () {
     var section = document.querySelector(".hscroll-section");

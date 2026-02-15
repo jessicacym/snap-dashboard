@@ -58,6 +58,10 @@
           Exploring participation, benefits, and demographic patterns across the
           United States.
         </p>
+        <p class="fv-map-hint">
+          Click on the specific state or county you wish to learn about to view
+          local 2013 SNAP news highlights.
+        </p>
       </div>
     </section>
 
@@ -100,7 +104,7 @@
           <span class="section-num">01</span>
           <span class="section-tag">ABOUT</span>
         </div>
-        <h2 class="section-heading">About SNAP</h2>
+        <h2 class="section-heading">About SNAP Information</h2>
         <p class="state-indicator" id="stateIndicator" style="display: none">
           Showing SNAP data for:
           <strong id="stateName"></strong>
@@ -186,32 +190,339 @@
         </div>
         <h2 class="section-heading">Numbers That Matter</h2>
         <div class="stats-grid">
-          <div class="stat-item">
+          <div class="stat-item" data-stat="participants">
             <span class="stat-number">47.6M</span>
             <span class="stat-label">Average Monthly Participants</span>
             <div class="stat-bar">
               <div class="stat-bar-fill" style="--w: 85%"></div>
             </div>
+            <span class="stat-hint">Click for monthly breakdown</span>
+            <div class="stat-tooltip">
+              <div class="stat-tooltip-header">
+                <h4>Monthly SNAP Participants (2013)</h4>
+                <button class="stat-tooltip-close">&times;</button>
+              </div>
+              <div class="stat-tooltip-body">
+                <div class="stat-tooltip-row">
+                  <span>Jan</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 96%"></div>
+                  </div>
+                  <span>47.8M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Feb</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 97%"></div>
+                  </div>
+                  <span>47.7M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Mar</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 98%"></div>
+                  </div>
+                  <span>47.7M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Apr</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 100%"></div>
+                  </div>
+                  <span>47.9M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>May</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 99%"></div>
+                  </div>
+                  <span>47.8M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Jun</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 98%"></div>
+                  </div>
+                  <span>47.7M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Jul</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 97%"></div>
+                  </div>
+                  <span>47.6M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Aug</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 96%"></div>
+                  </div>
+                  <span>47.6M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Sep</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 95%"></div>
+                  </div>
+                  <span>47.4M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Oct</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 94%"></div>
+                  </div>
+                  <span>47.4M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Nov</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 93%"></div>
+                  </div>
+                  <span>47.0M</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Dec</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 91%"></div>
+                  </div>
+                  <span>46.5M</span>
+                </div>
+              </div>
+              <p class="stat-tooltip-note">
+                Source: USDA FNS. Nov benefit cut caused enrollment decline.
+              </p>
+            </div>
           </div>
-          <div class="stat-item">
+          <div class="stat-item" data-stat="benefits">
             <span class="stat-number">$76.1B</span>
             <span class="stat-label">Total Benefits Distributed</span>
             <div class="stat-bar">
               <div class="stat-bar-fill" style="--w: 72%"></div>
             </div>
+            <span class="stat-hint">Click for top states</span>
+            <div class="stat-tooltip">
+              <div class="stat-tooltip-header">
+                <h4>Top 10 States by Benefits (2013)</h4>
+                <button class="stat-tooltip-close">&times;</button>
+              </div>
+              <div class="stat-tooltip-body">
+                <div class="stat-tooltip-row">
+                  <span>California</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 100%"></div>
+                  </div>
+                  <span>$10.2B</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Texas</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 69%"></div>
+                  </div>
+                  <span>$7.0B</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>New York</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 57%"></div>
+                  </div>
+                  <span>$5.8B</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Florida</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 55%"></div>
+                  </div>
+                  <span>$5.6B</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Illinois</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 31%"></div>
+                  </div>
+                  <span>$3.2B</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Pennsylvania</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 28%"></div>
+                  </div>
+                  <span>$2.9B</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Georgia</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 27%"></div>
+                  </div>
+                  <span>$2.7B</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Ohio</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 25%"></div>
+                  </div>
+                  <span>$2.6B</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Michigan</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 24%"></div>
+                  </div>
+                  <span>$2.5B</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>North Carolina</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 23%"></div>
+                  </div>
+                  <span>$2.3B</span>
+                </div>
+              </div>
+              <p class="stat-tooltip-note">
+                Source: USDA FNS. Top 10 account for ~58% of total benefits.
+              </p>
+            </div>
           </div>
-          <div class="stat-item">
+          <div class="stat-item" data-stat="avgbenefit">
             <span class="stat-number">$133</span>
             <span class="stat-label">Avg. Monthly Benefit Per Person</span>
             <div class="stat-bar">
               <div class="stat-bar-fill" style="--w: 55%"></div>
             </div>
+            <span class="stat-hint">Click for state comparison</span>
+            <div class="stat-tooltip">
+              <div class="stat-tooltip-header">
+                <h4>Avg. Benefit Per Person by State (2013)</h4>
+                <button class="stat-tooltip-close">&times;</button>
+              </div>
+              <div class="stat-tooltip-body">
+                <div class="stat-tooltip-row stat-tooltip-row--highlight">
+                  <span>Alaska</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 100%"></div>
+                  </div>
+                  <span>$191</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Hawaii</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 93%"></div>
+                  </div>
+                  <span>$178</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>California</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 83%"></div>
+                  </div>
+                  <span>$159</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Connecticut</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 77%"></div>
+                  </div>
+                  <span>$147</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>D.C.</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 76%"></div>
+                  </div>
+                  <span>$146</span>
+                </div>
+                <div class="stat-tooltip-row stat-tooltip-row--avg">
+                  <span>National Avg.</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 70%"></div>
+                  </div>
+                  <span>$133</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Tennessee</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 60%"></div>
+                  </div>
+                  <span>$115</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Wisconsin</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 57%"></div>
+                  </div>
+                  <span>$109</span>
+                </div>
+                <div class="stat-tooltip-row">
+                  <span>Idaho</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 55%"></div>
+                  </div>
+                  <span>$105</span>
+                </div>
+                <div class="stat-tooltip-row stat-tooltip-row--highlight">
+                  <span>N. Dakota</span>
+                  <div class="stat-tooltip-bar-wrap">
+                    <div class="stat-tooltip-bar" style="--bw: 52%"></div>
+                  </div>
+                  <span>$99</span>
+                </div>
+              </div>
+              <p class="stat-tooltip-note">
+                Highest: Alaska $191 | Lowest: N. Dakota $99 | National: $133
+              </p>
+            </div>
           </div>
-          <div class="stat-item">
+          <div class="stat-item" data-stat="states">
             <span class="stat-number">50</span>
             <span class="stat-label">States Analyzed</span>
             <div class="stat-bar">
               <div class="stat-bar-fill" style="--w: 100%"></div>
+            </div>
+            <span class="stat-hint">Click to view all states</span>
+            <div class="stat-tooltip">
+              <div class="stat-tooltip-header">
+                <h4>All 50 States + D.C. Analyzed</h4>
+                <button class="stat-tooltip-close">&times;</button>
+              </div>
+              <div class="stat-tooltip-states">
+                <div class="stat-tooltip-region">
+                  <h5>Northeast (9)</h5>
+                  <span>Connecticut</span><span>Maine</span
+                  ><span>Massachusetts</span><span>New Hampshire</span
+                  ><span>New Jersey</span><span>New York</span
+                  ><span>Pennsylvania</span><span>Rhode Island</span
+                  ><span>Vermont</span>
+                </div>
+                <div class="stat-tooltip-region">
+                  <h5>Midwest (12)</h5>
+                  <span>Illinois</span><span>Indiana</span><span>Iowa</span
+                  ><span>Kansas</span><span>Michigan</span><span>Minnesota</span
+                  ><span>Missouri</span><span>Nebraska</span
+                  ><span>North Dakota</span><span>Ohio</span
+                  ><span>South Dakota</span><span>Wisconsin</span>
+                </div>
+                <div class="stat-tooltip-region">
+                  <h5>South (17)</h5>
+                  <span>Alabama</span><span>Arkansas</span><span>Delaware</span
+                  ><span>D.C.</span><span>Florida</span><span>Georgia</span
+                  ><span>Kentucky</span><span>Louisiana</span
+                  ><span>Maryland</span><span>Mississippi</span
+                  ><span>North Carolina</span><span>Oklahoma</span
+                  ><span>South Carolina</span><span>Tennessee</span
+                  ><span>Texas</span><span>Virginia</span
+                  ><span>West Virginia</span>
+                </div>
+                <div class="stat-tooltip-region">
+                  <h5>West (13)</h5>
+                  <span>Alaska</span><span>Arizona</span><span>California</span
+                  ><span>Colorado</span><span>Hawaii</span><span>Idaho</span
+                  ><span>Montana</span><span>Nevada</span><span>New Mexico</span
+                  ><span>Oregon</span><span>Utah</span><span>Washington</span
+                  ><span>Wyoming</span>
+                </div>
+              </div>
+              <p class="stat-tooltip-note">
+                All 50 states + District of Columbia included in dataset.
+              </p>
             </div>
           </div>
         </div>
@@ -529,30 +840,66 @@
         <h2 class="section-heading">Key Findings</h2>
         <div class="insights-grid">
           <div class="insight-card">
-            <span class="insight-tag">Finding</span>
-            <h4>Regional Disparity</h4>
+            <span class="insight-tag">Finding 1</span>
+            <h4>Data Granularity Shapes the Story</h4>
             <p>
-              Southern states showed significantly higher SNAP participation
-              rates compared to the national average, reflecting broader
-              socioeconomic patterns and cost-of-living differences.
+              County-level data reveals patterns invisible at the state level. A
+              state with a moderate average (e.g., <strong>12%</strong>) might
+              contain counties ranging from <strong>2%</strong> to
+              <strong>35%</strong>. The dashboard must enable users to explore
+              at both levels to avoid ecological fallacy.
             </p>
           </div>
           <div class="insight-card">
-            <span class="insight-tag">Finding</span>
-            <h4>Urban vs. Rural</h4>
+            <span class="insight-tag">Finding 2</span>
+            <h4>
+              <strong>11.9</strong> Million People Relied on SNAP in January
+              2023
+            </h4>
             <p>
-              Urban areas demonstrated higher total enrollment numbers, while
-              rural counties exhibited higher per-capita participation rates,
-              suggesting distinct patterns of food insecurity.
+              Across <strong>3,129</strong> counties and
+              <strong>52</strong> states/territories, SNAP served nearly
+              <strong>12 million</strong> individuals in over
+              <strong>7.2 million</strong> households. The sheer scale justifies
+              granular geographic analysis to understand where resources are
+              most needed.
             </p>
           </div>
           <div class="insight-card">
-            <span class="insight-tag">Finding</span>
-            <h4>Benefit Distribution</h4>
+            <span class="insight-tag">Finding 3</span>
+            <h4>Single-Person Households Dominate</h4>
             <p>
-              Average monthly benefits varied substantially by state, with
-              differences reflecting local cost-of-living adjustments and
-              household composition demographics.
+              Nationally, <strong>57.7%</strong> of SNAP households are
+              single-person households (ranging from <strong>46.7%</strong> to
+              <strong>68.1%</strong> by state). This challenges the common
+              perception of SNAP as primarily a family program and has policy
+              implications for benefit calculation and service delivery.
+            </p>
+          </div>
+          <div class="insight-card">
+            <span class="insight-tag">Finding 4</span>
+            <h4>The Urban-Rural Gap Is Narrower Than Expected</h4>
+            <p>
+              While rural counties average higher participation (<strong
+                >15.3%</strong
+              >
+              vs <strong>12.7–14.5%</strong> in metro areas), the within-group
+              variation far exceeds the between-group difference. This means
+              urban/rural classification alone is an insufficient predictor;
+              local economic conditions matter more.
+            </p>
+          </div>
+          <div class="insight-card">
+            <span class="insight-tag">Finding 5</span>
+            <h4>Demographic Profiles Vary Dramatically by State</h4>
+            <p>
+              The percentage of SNAP households with children ranges from
+              <strong>26.0%</strong> to <strong>43.2%</strong>; elderly
+              households from <strong>23.9%</strong> to <strong>42.6%</strong>;
+              disabled from <strong>13.5%</strong> to <strong>25.0%</strong>.
+              These wide ranges mean that a one-size-fits-all SNAP policy fails
+              to account for fundamentally different recipient populations
+              across states.
             </p>
           </div>
         </div>
