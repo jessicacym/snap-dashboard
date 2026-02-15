@@ -57,18 +57,12 @@ body {
 }
 
 /* --- Center visual: interactive map --- */
-/* The iframe is scaled up with CSS transform so the map graphic
-   fills the visible area. overflow:hidden on .fv-visual clips
-   everything outside. White overlays hide the grey border and
-   bottom toolbar. The scale + negative translate centers the
-   map portion of Tableau's output. */
 .fv-visual {
   position: absolute;
-  top: 44%;
-  left: 46%;
-  transform: translate(-50%, -50%);
-  width: 75%;
-  height: 85%;
+  top: 1%;
+  left: 8%;
+  width: 70%;
+  height: 90%;
   z-index: 1;
   overflow: hidden;
   opacity: 0;
@@ -84,46 +78,65 @@ body {
 .fv-map-wrap iframe {
   display: block;
   border: none;
-  /* Make iframe larger than container, then scale up to fill.
-     Tableau renders at iframe's CSS size, so we give it more room
-     then visually scale and reposition to show only the map. */
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  transform: scale(1.35);
-  transform-origin: 20% 35%;
+  z-index: 1;
   pointer-events: auto;
+  transform: scale(1.6);
+  transform-origin: top left;
 }
 
+/* Real HTML divs that sit ON TOP of the iframe to cover
+   Tableau's grey 1px border and bottom toolbar.
+   (Pseudo-elements cannot overlay iframes.) */
+.cover-border {
+  position: absolute;
+  background: #ffffff;
+  z-index: 10;
+  pointer-events: none;
+}
+.cover-top {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+.cover-bottom {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+.cover-left {
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+}
+.cover-right {
+  top: 0;
+  right: 0;
+  width: 3px;
+  height: 100%;
+}
 /* White bar covering the Tableau bottom toolbar */
-.fv-map-wrap::after {
-  content: "";
+.cover-toolbar {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 60px;
+  height: 42px;
   background: #ffffff;
-  z-index: 5;
-  pointer-events: none;
-}
-
-/* White frame covering Tableau's grey border on all sides */
-.fv-map-wrap::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 4px solid #ffffff;
-  z-index: 4;
+  z-index: 10;
   pointer-events: none;
 }
 
 @keyframes fvVisualIn {
   to {
     opacity: 1;
-    transform: translate(-50%, -50%);
   }
 }
 
@@ -200,12 +213,13 @@ body {
 }
 
 /* --- Right-bottom: big title text --- */
-/* Black background bars with white text, like the original */
+/* Black background bars with white text at page bottom-right,
+   like the original Ampersand design. */
 .fv-text-wrapper {
   position: absolute;
   right: 40px;
   bottom: 10%;
-  z-index: 10;
+  z-index: 20;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -724,8 +738,9 @@ body {
    ============================================ */
 @media (max-width: 1200px) {
   .fv-visual {
-    width: 82%;
-    height: 80%;
+    width: 75%;
+    height: 88%;
+    left: 1%;
   }
   .section {
     padding: 100px 48px;
@@ -737,8 +752,9 @@ body {
 
 @media (max-width: 1024px) {
   .fv-visual {
-    width: 92%;
-    height: 72%;
+    width: 80%;
+    height: 85%;
+    left: 1%;
   }
   .fv-side-menu {
     display: none;
@@ -769,7 +785,8 @@ body {
 @media (max-width: 768px) {
   .fv-visual {
     width: 95%;
-    height: 48%;
+    height: 50%;
+    left: 1%;
   }
   .statement {
     padding: 80px 24px 100px;

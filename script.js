@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const vh = window.innerHeight;
         if (scrollY < vh) {
           const progress = scrollY / vh;
-          fvVisual.style.transform = `translate(-50%, calc(-50% + ${progress * 50}px))`;
+          fvVisual.style.transform = `translateY(${progress * 50}px)`;
           fvVisual.style.opacity = 1 - progress * 0.5;
         }
       },
