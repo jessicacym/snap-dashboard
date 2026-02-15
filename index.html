@@ -11,6 +11,10 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <script
+      type="module"
+      src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"
+    ></script>
   </head>
   <body>
     <!-- ========== HERO / FV ========== -->
@@ -18,13 +22,12 @@
       <!-- Center: Interactive map (replaces ink splash) -->
       <div class="fv-visual">
         <div class="fv-map-wrap">
-          <iframe
-            src="https://public.tableau.com/views/1_17711016889240/4_1?:embed=true&:showVizHome=no&:toolbar=no&:tabs=no"
-            width="100%"
-            height="100%"
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
+          <tableau-viz
+            id="tableauViz"
+            src="https://public.tableau.com/views/1_17711016889240/4_1"
+            toolbar="hidden"
+            hide-tabs
+          ></tableau-viz>
           <!-- Real HTML divs to cover iframe elements (pseudo-elements can't overlay iframes) -->
           <div class="cover-border cover-top"></div>
           <div class="cover-border cover-bottom"></div>
@@ -90,7 +93,18 @@
           <span class="section-num">01</span>
           <span class="section-tag">ABOUT</span>
         </div>
-        <h2 class="section-heading">About This Dashboard</h2>
+        <h2 class="section-heading">About SNAP</h2>
+        <p class="state-indicator" id="stateIndicator" style="display: none">
+          Showing SNAP data for:
+          <strong id="stateName"></strong>
+          <button
+            class="state-reset-btn"
+            id="resetBtn"
+            title="Reset to default"
+          >
+            Clear
+          </button>
+        </p>
         <div class="about-grid">
           <div class="about-card">
             <div class="about-card-icon">
@@ -246,6 +260,14 @@
       </div>
     </section>
 
+    <!-- ========== MARQUEE TEXT ========== -->
+    <section class="marquee-section">
+      <div class="marquee-track">
+        <span class="marquee-text">2013 America SNAP Investigation</span>
+        <span class="marquee-text">2013 America SNAP Investigation</span>
+      </div>
+    </section>
+
     <!-- ========== INSIGHTS ========== -->
     <section class="section section--insights" id="insights">
       <div class="section-inner">
@@ -301,6 +323,7 @@
       </div>
     </footer>
 
+    <script src="snap-news.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
