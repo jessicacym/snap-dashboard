@@ -11,10 +11,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <script
-      type="module"
-      src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"
-    ></script>
+    <!-- SVG map replaces Tableau embed -->
   </head>
   <body>
     <!-- ========== HERO / FV ========== -->
@@ -22,18 +19,127 @@
       <!-- Center: Interactive map (replaces ink splash) -->
       <div class="fv-visual">
         <div class="fv-map-wrap">
-          <tableau-viz
-            id="tableauViz"
-            src="https://public.tableau.com/views/1_17711016889240/4_1"
-            toolbar="hidden"
-            hide-tabs
-          ></tableau-viz>
-          <!-- Real HTML divs to cover iframe elements (pseudo-elements can't overlay iframes) -->
-          <div class="cover-border cover-top"></div>
-          <div class="cover-border cover-bottom"></div>
-          <div class="cover-border cover-left"></div>
-          <div class="cover-border cover-right"></div>
-          <div class="cover-toolbar"></div>
+          <!-- Map Controls -->
+          <div class="map-controls">
+            <div class="mode-switcher">
+              <button class="mode-btn active" data-mode="demographics">
+                Demographics
+              </button>
+              <button class="mode-btn" data-mode="participation">
+                Participation Rate
+              </button>
+            </div>
+            <select class="month-select" id="monthSelect">
+              <option value="Oct 2022">Oct 2022</option>
+              <option value="Nov 2022">Nov 2022</option>
+              <option value="Dec 2022">Dec 2022</option>
+              <option value="Jan 2023" selected>Jan 2023</option>
+              <option value="Feb 2023">Feb 2023</option>
+              <option value="Mar 2023">Mar 2023</option>
+              <option value="Apr 2023">Apr 2023</option>
+              <option value="May 2023">May 2023</option>
+              <option value="Jun 2023">Jun 2023</option>
+              <option value="Jul 2023">Jul 2023</option>
+              <option value="Aug 2023">Aug 2023</option>
+              <option value="Sep 2023">Sep 2023</option>
+            </select>
+          </div>
+
+          <svg
+            id="snapMapSvg"
+            viewBox="0 0 960 600"
+            preserveAspectRatio="xMidYMid meet"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!-- State paths injected by script.js -->
+          </svg>
+
+          <!-- Color Legend -->
+          <div class="map-legend" id="mapLegend">
+            <span class="legend-label" id="legendMin">0</span>
+            <div class="legend-gradient" id="legendGradient"></div>
+            <span class="legend-label" id="legendMax">5M+</span>
+          </div>
+
+          <!-- Tooltip -->
+          <div class="map-tooltip" id="mapTooltip">
+            <div class="map-tooltip-state" id="tooltipState"></div>
+            <!-- Participation Rate mode rows -->
+            <div
+              class="map-tooltip-row"
+              id="tooltipRateRow"
+              style="display: none"
+            >
+              <span class="map-tooltip-label">SNAP Participation Rate:</span>
+              <span class="map-tooltip-value" id="tooltipRate"></span>
+            </div>
+            <div
+              class="map-tooltip-row"
+              id="tooltipHHRow"
+              style="display: none"
+            >
+              <span class="map-tooltip-label">SNAP Households:</span>
+              <span class="map-tooltip-value" id="tooltipHouseholds"></span>
+            </div>
+            <div
+              class="map-tooltip-row"
+              id="tooltipTotalHHRow"
+              style="display: none"
+            >
+              <span class="map-tooltip-label">Total Households:</span>
+              <span class="map-tooltip-value" id="tooltipTotalHH"></span>
+            </div>
+            <div
+              class="map-tooltip-row"
+              id="tooltipPersonsRow"
+              style="display: none"
+            >
+              <span class="map-tooltip-label">SNAP Persons:</span>
+              <span class="map-tooltip-value" id="tooltipPersons"></span>
+            </div>
+            <!-- Pie chart for Participation Rate mode (工作表 6 embedded in 工作表 3) -->
+            <div
+              class="tooltip-piechart"
+              id="tooltipPieChart"
+              style="display: none"
+            ></div>
+            <div
+              class="map-tooltip-row"
+              id="tooltipBenefitsRow"
+              style="display: none"
+            >
+              <span class="map-tooltip-label">State Benefits USD:</span>
+              <span class="map-tooltip-value" id="tooltipBenefits"></span>
+            </div>
+            <div
+              class="map-tooltip-row"
+              id="tooltipPctRow"
+              style="display: none"
+            >
+              <span class="map-tooltip-label"
+                >Percentage of National Total:</span
+              >
+              <span class="map-tooltip-value" id="tooltipPct"></span>
+            </div>
+            <!-- Demographics mode rows -->
+            <div
+              class="map-tooltip-row"
+              id="tooltipDemoPersonsRow"
+              style="display: none"
+            >
+              <span class="map-tooltip-label">Total SNAP Persons:</span>
+              <span class="map-tooltip-value" id="tooltipDemoPersons"></span>
+            </div>
+            <div
+              class="map-tooltip-row"
+              id="tooltipDemoHHRow"
+              style="display: none"
+            >
+              <span class="map-tooltip-label">Total SNAP Households:</span>
+              <span class="map-tooltip-value" id="tooltipDemoHH"></span>
+            </div>
+            <div class="tooltip-demographics" id="tooltipDemographics"></div>
+          </div>
         </div>
       </div>
 
@@ -922,6 +1028,10 @@
     </footer>
 
     <script src="snap-news.js"></script>
+    <script src="snap-state-data.js"></script>
+    <script src="snap-monthly-data.js"></script>
+    <script src="snap-demographics.js"></script>
+    <script src="us-states.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

@@ -466,131 +466,453 @@ document.addEventListener("DOMContentLoaded", () => {
     "District of Columbia",
   ];
 
-  function extractStateName(marksData) {
-    var columns = marksData.columns;
-    var data = marksData.data;
-    if (!data || data.length === 0) return null;
+  // ============================================
+  //  SVG Choropleth Map — Dual Mode
+  //  Demographics (blue-teal) + Participation Rate (green)
+  // ============================================
+  (function initSnapMap() {
+    var svg = document.getElementById("snapMapSvg");
+    var tooltip = document.getElementById("mapTooltip");
+    var tooltipState = document.getElementById("tooltipState");
+    var tooltipRateRow = document.getElementById("tooltipRateRow");
+    var tooltipRate = document.getElementById("tooltipRate");
+    var tooltipHHRow = document.getElementById("tooltipHHRow");
+    var tooltipHouseholds = document.getElementById("tooltipHouseholds");
+    var tooltipTotalHHRow = document.getElementById("tooltipTotalHHRow");
+    var tooltipTotalHH = document.getElementById("tooltipTotalHH");
+    var tooltipPersonsRow = document.getElementById("tooltipPersonsRow");
+    var tooltipPersons = document.getElementById("tooltipPersons");
+    var tooltipDemoPersonsRow = document.getElementById("tooltipDemoPersonsRow");
+    var tooltipDemoPersons = document.getElementById("tooltipDemoPersons");
+    var tooltipDemoHHRow = document.getElementById("tooltipDemoHHRow");
+    var tooltipDemoHH = document.getElementById("tooltipDemoHH");
+    var tooltipDemographics = document.getElementById("tooltipDemographics");
+    var tooltipPieChart = document.getElementById("tooltipPieChart");
+    var tooltipBenefitsRow = document.getElementById("tooltipBenefitsRow");
+    var tooltipBenefits = document.getElementById("tooltipBenefits");
+    var tooltipPctRow = document.getElementById("tooltipPctRow");
+    var tooltipPct = document.getElementById("tooltipPct");
+    var monthSelect = document.getElementById("monthSelect");
+    var legendGradient = document.getElementById("legendGradient");
+    var legendMin = document.getElementById("legendMin");
+    var legendMax = document.getElementById("legendMax");
+    var modeBtns = document.querySelectorAll(".mode-btn");
 
-    // Try to find a column containing state info
-    for (var colIdx = 0; colIdx < columns.length; colIdx++) {
-      var fieldName = columns[colIdx].fieldName.toLowerCase();
-      if (
-        fieldName.includes("state") ||
-        fieldName.includes("region") ||
-        fieldName.includes("location") ||
-        fieldName.includes("county") ||
-        fieldName.includes("name")
-      ) {
-        var value = data[0][colIdx].formattedValue || data[0][colIdx].value;
-        var resolved = resolveStateName(value);
-        if (resolved) return resolved;
-      }
+    if (
+      !svg ||
+      typeof US_STATES === "undefined" ||
+      typeof SNAP_STATE_DATA === "undefined"
+    ) {
+      console.warn("Map dependencies not loaded");
+      return;
     }
 
-    // Fallback: check all columns for a value that matches a state name or abbreviation
-    for (var c = 0; c < columns.length; c++) {
-      var val = (data[0][c].formattedValue || data[0][c].value || "").trim();
-      var resolved = resolveStateName(val);
-      if (resolved) return resolved;
-    }
+    // --- State ---
+    var currentMode = "demographics";
+    var currentMonth = "Jan 2023";
+    var selectedPath = null;
 
-    return null;
-  }
+    // --- Palettes ---
+    // Blue-teal (Tableau blue_teal_10_0) for Demographics
+    var BLUE_TEAL = [
+      [224, 243, 248],
+      [179, 226, 240],
+      [137, 208, 225],
+      [102, 184, 207],
+      [78, 157, 186],
+      [60, 131, 165],
+      [43, 106, 144],
+      [29, 81, 123],
+      [16, 57, 103],
+      [4, 34, 82],
+    ];
 
-  // Listen to Tableau viz mark selection events
-  var viz = document.getElementById("tableauViz");
-  if (viz) {
-    // Mark selection handler
-    function handleMarkSelection(event) {
-      console.log("Mark selection event fired!", event);
-      (async function () {
-        try {
-          var marksSelected = await event.detail.getMarksAsync();
-          console.log("Marks data:", marksSelected);
+    // Green (Tableau green_10_0) for Participation Rate
+    var GREEN = [
+      [247, 252, 245],
+      [229, 245, 224],
+      [199, 233, 192],
+      [161, 217, 155],
+      [116, 196, 118],
+      [65, 171, 93],
+      [35, 139, 69],
+      [0, 109, 44],
+      [0, 68, 27],
+      [0, 51, 17],
+    ];
 
-          if (
-            !marksSelected.data ||
-            marksSelected.data.length === 0 ||
-            marksSelected.data[0].data.length === 0
-          ) {
-            resetAboutCards();
-            return;
-          }
-
-          var marksData = marksSelected.data[0];
-          console.log(
-            "Columns:",
-            marksData.columns.map(function (c) {
-              return c.fieldName;
-            }),
-          );
-          console.log("First row:", marksData.data[0]);
-          var stateName = extractStateName(marksData);
-
-          if (stateName) {
-            console.log("State found:", stateName);
-            updateAboutCards(stateName);
-          } else {
-            console.warn("Could not extract state name from marks", marksData);
-          }
-        } catch (err) {
-          console.error("Error handling mark selection:", err);
-        }
-      })();
-    }
-
-    // Attach the markselectionchanged listener.
-    // With Embedding API v3, we can add the listener directly on the
-    // <tableau-viz> element — even before it becomes interactive.
-    // The web component queues listeners and fires them once ready.
-    var listenerAttached = false;
-
-    function attachMarkListener() {
-      if (listenerAttached) return;
-      listenerAttached = true;
-      viz.addEventListener("markselectionchanged", handleMarkSelection);
-      console.log("Mark selection listener attached");
-    }
-
-    // Method 1: Attach immediately — the <tableau-viz> web component
-    // supports adding event listeners before the viz is interactive.
-    attachMarkListener();
-
-    // Method 2: Also listen for firstinteractive as a signal that
-    // the viz is ready (useful for additional setup if needed).
-    viz.addEventListener("firstinteractive", function () {
-      console.log("Tableau viz firstinteractive fired");
-      attachMarkListener(); // no-op if already attached
+    // --- Reverse lookup: abbreviation → full name ---
+    var ABBR_TO_NAME = {};
+    Object.keys(STATE_ABBREV).forEach(function (a) {
+      ABBR_TO_NAME[a] = STATE_ABBREV[a];
     });
 
-    // Method 3: Wait for the custom element to be defined, then
-    // re-attach if needed. This handles the case where the module
-    // script hasn't loaded yet when DOMContentLoaded fires.
-    if (window.customElements && customElements.whenDefined) {
-      customElements.whenDefined("tableau-viz").then(function () {
-        console.log("tableau-viz custom element defined");
-        attachMarkListener(); // no-op if already attached
+    // --- Max values and totals ---
+    var maxDemoPersons = 0;
+    var nationalTotalBenefits = 0;
+    Object.keys(SNAP_STATE_DATA).forEach(function (abbr) {
+      if (SNAP_STATE_DATA[abbr].persons > maxDemoPersons) {
+        maxDemoPersons = SNAP_STATE_DATA[abbr].persons;
+      }
+      nationalTotalBenefits += SNAP_STATE_DATA[abbr].benefits || 0;
+    });
+
+    // Max monthly persons across all states and months
+    var maxMonthlyPersons = 0;
+    if (typeof SNAP_MONTHLY !== "undefined") {
+      Object.keys(SNAP_MONTHLY).forEach(function (stateName) {
+        Object.keys(SNAP_MONTHLY[stateName]).forEach(function (month) {
+          var p = SNAP_MONTHLY[stateName][month].persons;
+          if (p > maxMonthlyPersons) maxMonthlyPersons = p;
+        });
       });
     }
 
-    // Method 4: Fallback polling — check if viz has workbook
-    var pollCount = 0;
-    var pollInterval = setInterval(function () {
-      pollCount++;
-      if (pollCount > 120) {
-        clearInterval(pollInterval);
-        console.warn("Tableau viz did not become interactive after 60s");
-        return;
+    // --- Color interpolation ---
+    function interpolateColor(value, maxVal, palette) {
+      var t = Math.max(0, Math.min(1, value / maxVal));
+      var idx = t * (palette.length - 1);
+      var lo = Math.floor(idx);
+      var hi = Math.min(lo + 1, palette.length - 1);
+      var f = idx - lo;
+      var r = Math.round(palette[lo][0] + (palette[hi][0] - palette[lo][0]) * f);
+      var g = Math.round(palette[lo][1] + (palette[hi][1] - palette[lo][1]) * f);
+      var b = Math.round(palette[lo][2] + (palette[hi][2] - palette[lo][2]) * f);
+      return "rgb(" + r + "," + g + "," + b + ")";
+    }
+
+    // Format numbers with commas
+    function fmt(n) {
+      if (n == null) return "—";
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    // Format currency
+    function fmtCurrency(n) {
+      if (n == null) return "—";
+      return "$" + n.toFixed(2);
+    }
+
+    // --- Build SVG pie chart (工作表 6 — participation rate proportion) ---
+    // Solid pie: SNAP HH slice (coral) vs rest (grey), center percentage label, legend
+    function buildPieChart(rate, snapHH, totalHH) {
+      if (rate == null || rate <= 0) return "";
+      var pct = Math.min(rate, 100);
+      // Ensure very small slices are still visible (min 2% arc visually)
+      var displayPct = Math.max(pct, 2);
+      var outerR = 38;
+      var cx = 48, cy = 42, svgW = 96, svgH = 84;
+
+      // Colors matching Tableau
+      var snapColor = "#e15759";  // coral red for SNAP portion
+      var restColor = "#c8c3c0";  // light warm grey for rest
+
+      // Build pie using path arcs for crisp rendering
+      var startAngle = -Math.PI / 2; // start from top
+      var snapAngle = (displayPct / 100) * 2 * Math.PI;
+      var endAngle = startAngle + snapAngle;
+
+      // SNAP slice arc
+      var x1 = cx + outerR * Math.cos(startAngle);
+      var y1 = cy + outerR * Math.sin(startAngle);
+      var x2 = cx + outerR * Math.cos(endAngle);
+      var y2 = cy + outerR * Math.sin(endAngle);
+      var largeArc = displayPct > 50 ? 1 : 0;
+
+      var snapPath = 'M ' + cx + ' ' + cy +
+        ' L ' + x1.toFixed(2) + ' ' + y1.toFixed(2) +
+        ' A ' + outerR + ' ' + outerR + ' 0 ' + largeArc + ' 1 ' + x2.toFixed(2) + ' ' + y2.toFixed(2) + ' Z';
+
+      // Rest slice arc (from endAngle back to startAngle)
+      var x3 = cx + outerR * Math.cos(endAngle);
+      var y3 = cy + outerR * Math.sin(endAngle);
+      var x4 = cx + outerR * Math.cos(startAngle);
+      var y4 = cy + outerR * Math.sin(startAngle);
+      var restLargeArc = (100 - displayPct) > 50 ? 1 : 0;
+
+      var restPath = 'M ' + cx + ' ' + cy +
+        ' L ' + x3.toFixed(2) + ' ' + y3.toFixed(2) +
+        ' A ' + outerR + ' ' + outerR + ' 0 ' + restLargeArc + ' 1 ' + x4.toFixed(2) + ' ' + y4.toFixed(2) + ' Z';
+
+      // Center label — show actual percentage
+      var labelText = pct.toFixed(1) + '%';
+
+      var svg = '<svg class="tooltip-pie-svg" width="' + svgW + '" height="' + svgH + '" viewBox="0 0 ' + svgW + ' ' + svgH + '">' +
+        // Subtle drop shadow
+        '<defs><filter id="pieShadow" x="-10%" y="-10%" width="120%" height="120%">' +
+        '<feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.15"/></filter></defs>' +
+        // Pie group with shadow
+        '<g filter="url(#pieShadow)">' +
+        '<path d="' + restPath + '" fill="' + restColor + '"/>' +
+        '<path d="' + snapPath + '" fill="' + snapColor + '"/>' +
+        // Thin white separator lines at slice boundaries
+        '<line x1="' + cx + '" y1="' + cy + '" x2="' + x1.toFixed(2) + '" y2="' + y1.toFixed(2) + '" stroke="#fff" stroke-width="1" opacity="0.7"/>' +
+        '<line x1="' + cx + '" y1="' + cy + '" x2="' + x2.toFixed(2) + '" y2="' + y2.toFixed(2) + '" stroke="#fff" stroke-width="1" opacity="0.7"/>' +
+        '</g>' +
+        // White background for center label readability
+        '<circle cx="' + cx + '" cy="' + cy + '" r="16" fill="#fff" opacity="0.85"/>' +
+        // Center label
+        '<text x="' + cx + '" y="' + (cy + 1) + '" text-anchor="middle" dominant-baseline="central" ' +
+        'font-family="\'Inter\',\'Noto Sans JP\',sans-serif" font-size="11" font-weight="700" fill="#333">' +
+        labelText + '</text>' +
+        '</svg>';
+
+      // Legend below the SVG
+      var legend = '<div class="pie-legend">' +
+        '<span class="pie-legend-item"><span class="pie-legend-dot" style="background:' + snapColor + '"></span>SNAP HH' +
+        (snapHH != null ? ' (' + fmt(snapHH) + ')' : '') + '</span>' +
+        '<span class="pie-legend-item"><span class="pie-legend-dot" style="background:' + restColor + '"></span>Total HH' +
+        (totalHH != null ? ' (' + fmt(totalHH) + ')' : '') + '</span>' +
+        '</div>';
+
+      return svg + legend;
+    }
+
+    // --- Build gradient CSS ---
+    function buildGradient(palette) {
+      var stops = palette.map(function (c, i) {
+        var pct = (i / (palette.length - 1)) * 100;
+        return "rgb(" + c[0] + "," + c[1] + "," + c[2] + ") " + pct + "%";
+      });
+      return "linear-gradient(to right, " + stops.join(", ") + ")";
+    }
+
+    // --- Update legend ---
+    function updateLegend() {
+      if (currentMode === "demographics") {
+        legendGradient.style.background = buildGradient(BLUE_TEAL);
+        legendMin.textContent = "0";
+        legendMax.textContent = (maxDemoPersons / 1000000).toFixed(1) + "M";
+      } else {
+        legendGradient.style.background = buildGradient(GREEN);
+        legendMin.textContent = "0%";
+        legendMax.textContent = "25%";
       }
-      try {
-        if (viz.workbook || viz._impl || viz.shadowRoot) {
-          console.log("Tableau viz detected as ready via polling");
-          attachMarkListener(); // no-op if already attached
-          clearInterval(pollInterval);
+    }
+
+    // --- Render map colors ---
+    function renderMap() {
+      var paths = svg.querySelectorAll(".state-path");
+      paths.forEach(function (path) {
+        var abbr = path.id.replace("state-", "");
+
+        if (currentMode === "demographics") {
+          var data = SNAP_STATE_DATA[abbr];
+          if (data) {
+            path.style.fill = interpolateColor(data.persons, maxDemoPersons, BLUE_TEAL);
+          } else {
+            path.style.fill = "#f0f0f0";
+          }
+        } else {
+          // Participation Rate mode — color by participation rate percentage
+          var stateData = SNAP_STATE_DATA[abbr];
+          if (stateData && stateData.participationRate != null) {
+            path.style.fill = interpolateColor(stateData.participationRate, 25, GREEN);
+          } else {
+            path.style.fill = "#f0f0f0";
+          }
         }
-      } catch (e) {
-        // ignore errors during polling
+      });
+      updateLegend();
+    }
+
+    // --- Show tooltip ---
+    function showTooltip(abbr) {
+      var data = SNAP_STATE_DATA[abbr];
+      if (!data) return;
+
+      if (currentMode === "demographics") {
+        // Demographics mode — matches TWB 工作表 5 tooltip:
+        // State_Abbr (bold) + "SNAP Demographics"
+        // Total SNAP Persons: value
+        // Total SNAP Households: value
+        // Embedded bar chart (工作表 4)
+        tooltipState.textContent = abbr + "  SNAP Demographics";
+
+        // Hide participation mode rows
+        tooltipRateRow.style.display = "none";
+        tooltipHHRow.style.display = "none";
+        tooltipTotalHHRow.style.display = "none";
+        tooltipPersonsRow.style.display = "none";
+        if (tooltipPieChart) tooltipPieChart.style.display = "none";
+        if (tooltipBenefitsRow) tooltipBenefitsRow.style.display = "none";
+        if (tooltipPctRow) tooltipPctRow.style.display = "none";
+
+        // Show demographics mode rows
+        tooltipDemoPersonsRow.style.display = "flex";
+        tooltipDemoPersons.textContent = fmt(data.persons);
+        tooltipDemoHHRow.style.display = "flex";
+        tooltipDemoHH.textContent = fmt(data.households);
+
+        // Show demographics bar chart (工作表 4 — #998f8c brownish-grey)
+        if (
+          typeof SNAP_DEMOGRAPHICS !== "undefined" &&
+          SNAP_DEMOGRAPHICS[abbr]
+        ) {
+          tooltipDemographics.style.display = "block";
+          var bars = SNAP_DEMOGRAPHICS[abbr];
+          var barColor = "#998f8c";
+          tooltipDemographics.innerHTML = bars
+            .map(function (d) {
+              return (
+                '<div class="tooltip-bar-row">' +
+                '<span class="tooltip-bar-label">' + d.category + "</span>" +
+                '<div class="tooltip-bar-track"><div class="tooltip-bar-fill" style="width:' +
+                d.pct + "%;background:" + barColor +
+                '"></div></div>' +
+                '<span class="tooltip-bar-value">' + d.pct.toFixed(1) + "%</span>" +
+                "</div>"
+              );
+            })
+            .join("");
+        } else {
+          tooltipDemographics.style.display = "none";
+        }
+      } else {
+        // Participation Rate mode — matches TWB 工作表 3 tooltip:
+        // State_Abbr (bold, font 12) — header
+        // SNAP Participation Rate: value %
+        // SNAP Households: value
+        // Total Households: value
+        // SNAP Persons: value
+        tooltipState.textContent = data.name + " (" + abbr + ")";
+
+        // Show participation mode rows
+        tooltipRateRow.style.display = "flex";
+        tooltipRate.textContent = data.participationRate.toFixed(1) + " %";
+        tooltipHHRow.style.display = "flex";
+        tooltipHouseholds.textContent = fmt(data.households);
+        tooltipTotalHHRow.style.display = "flex";
+        var totalHH = Math.round(data.households / (data.participationRate / 100));
+        tooltipTotalHH.textContent = fmt(totalHH);
+        tooltipPersonsRow.style.display = "flex";
+        tooltipPersons.textContent = fmt(data.persons);
+
+        // Hide demographics mode rows
+        tooltipDemoPersonsRow.style.display = "none";
+        tooltipDemoHHRow.style.display = "none";
+        tooltipDemographics.style.display = "none";
+
+        // Show pie chart (工作表 6 — participation rate proportion)
+        if (tooltipPieChart) {
+          var pieHtml = buildPieChart(data.participationRate, data.households, totalHH);
+          if (pieHtml) {
+            tooltipPieChart.innerHTML = pieHtml;
+            tooltipPieChart.style.display = "block";
+          } else {
+            tooltipPieChart.style.display = "none";
+          }
+        }
+
+        // Show benefits and percentage rows
+        if (tooltipBenefitsRow && tooltipBenefits) {
+          tooltipBenefitsRow.style.display = "flex";
+          tooltipBenefits.textContent = "$" + fmt(data.benefits);
+        }
+        if (tooltipPctRow && tooltipPct) {
+          tooltipPctRow.style.display = "flex";
+          var statePct = nationalTotalBenefits > 0 ? ((data.benefits / nationalTotalBenefits) * 100).toFixed(1) : "0.0";
+          tooltipPct.textContent = statePct + "%";
+        }
       }
-    }, 500);
-  }
+      tooltip.classList.add("visible");
+    }
+
+    // --- Create SVG paths ---
+    Object.keys(US_STATES).forEach(function (abbr) {
+      var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", US_STATES[abbr]);
+      path.setAttribute("id", "state-" + abbr);
+      path.classList.add("state-path");
+
+      var data = SNAP_STATE_DATA[abbr];
+      if (data) {
+        path.style.fill = interpolateColor(data.persons, maxDemoPersons, BLUE_TEAL);
+      } else {
+        path.style.fill = "#f0f0f0";
+      }
+
+      // Click → update about cards
+      path.addEventListener("click", function () {
+        var stateName = STATE_ABBREV[abbr];
+        if (!stateName) return;
+
+        if (selectedPath === path) {
+          path.classList.remove("selected");
+          selectedPath = null;
+          resetAboutCards();
+          return;
+        }
+
+        if (selectedPath) selectedPath.classList.remove("selected");
+        path.classList.add("selected");
+        selectedPath = path;
+        updateAboutCards(stateName);
+      });
+
+      // Hover → tooltip
+      path.addEventListener("mouseenter", function () {
+        showTooltip(abbr);
+      });
+
+      path.addEventListener("mousemove", function (e) {
+        var rect = svg.parentElement.getBoundingClientRect();
+        var tooltipWidth = currentMode === "demographics" ? 340 : 340;
+        var tooltipHeight = currentMode === "demographics" ? 280 : 280;
+        var x = e.clientX - rect.left + 16;
+        var y = e.clientY - rect.top - 10;
+        if (x + tooltipWidth > rect.width) x = e.clientX - rect.left - tooltipWidth;
+        if (y + tooltipHeight > rect.height) y = e.clientY - rect.top - tooltipHeight;
+        tooltip.style.left = x + "px";
+        tooltip.style.top = y + "px";
+      });
+
+      path.addEventListener("mouseleave", function () {
+        tooltip.classList.remove("visible");
+      });
+
+      svg.appendChild(path);
+    });
+
+    // --- Mode switcher ---
+    modeBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var newMode = btn.dataset.mode;
+        if (newMode === currentMode) return;
+
+        currentMode = newMode;
+
+        // Toggle active class on buttons
+        modeBtns.forEach(function (b) {
+          b.classList.remove("active");
+        });
+        btn.classList.add("active");
+
+        // Show/hide month dropdown
+        if (monthSelect) {
+          monthSelect.style.display =
+            currentMode === "participation" ? "inline-block" : "none";
+        }
+
+        // Re-render map
+        renderMap();
+      });
+    });
+
+    // --- Month dropdown ---
+    if (monthSelect) {
+      // Start hidden (demographics is default)
+      monthSelect.style.display = "none";
+
+      monthSelect.addEventListener("change", function () {
+        currentMonth = this.value;
+        if (currentMode === "participation") {
+          renderMap();
+        }
+      });
+    }
+
+    // Initial legend
+    updateLegend();
+  })();
 });
